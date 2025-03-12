@@ -1,0 +1,22 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# PyCharm settings
+.idea/
+
+# Compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs & environment variables
+logs/
+*.log
+.env
+
+# Build and distribution files
+build/
+dist/
+*.egg-info/
