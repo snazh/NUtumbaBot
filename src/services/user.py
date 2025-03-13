@@ -1,7 +1,7 @@
 from typing import Optional
 
 from src.database.postgres import get_postgres
-from src.schemas.user import UserUpdate
+from src.schemas.user import UserUpdate, UserCreate
 from loguru import logger
 
 
@@ -13,9 +13,11 @@ class UserService:
         async with pool.acquire() as conn:
             try:
                 await conn.execute(
-                    "INSERT INTO users (username, tg_id, nu_id, age, course, description )"
-                    "VALUES ($1, $2, $3, $4, $5, $6 )",
-                    user.username, user.tg_id, user.nu_id, user.age, user.course, user.description
+                    "INSERT INTO users "
+                    "(username, tg_id, nu_id, age, course, description, photo_url, gender, preference)"
+                    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )",
+                    user.username, user.tg_id, user.nu_id, user.age, user.course, user.description, user.photo_url,
+                    user.gender, user.preference
                 )
                 return True
             except Exception as e:
@@ -28,18 +30,12 @@ class UserService:
         pool = await get_postgres()
         async with pool.acquire() as conn:
             try:
-                user = await conn.execute(
-                    "SELECT * FROM users"
-                    "WHERE tg_id = $1",
-                    tg_id
-                )
+                user = await conn.fetchrow("SELECT * FROM users WHERE tg_id = $1", tg_id)
                 if user:
                     return dict(user)
-
-                logger.error(f"⚠️ User does no exist")
                 return None
             except Exception as e:
-                logger.error(f"❌ Failed to fetch user  with tg_id({tg_id}): {e}")
+                logger.error(f"❌ Failed to fetch user with tg_id({tg_id}): {e}")
                 return None
 
     # @staticmethod

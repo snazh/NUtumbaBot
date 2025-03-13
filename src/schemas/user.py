@@ -5,13 +5,25 @@ from enum import Enum
 
 class CourseEnum(str, Enum):
     NP = "NUFYP"
-    BA1 = "Bachelor1"
-    BA2 = "Bachelor1"
-    BA3 = "Bachelor1"
-    BA4 = "Bachelor1"
+    BA1 = "Bachelor 1"
+    BA2 = "Bachelor 2"
+    BA3 = "Bachelor 3"
+    BA4 = "Bachelor 4"
     grad = "Graduate"
     phd = "Phd"
     other = "Other"
+
+
+class GenderEnum(str, Enum):
+    male = "male"
+    female = "female"
+    other = "other"
+
+
+class GenderPreference(str, Enum):
+    male = "male"
+    female = "female"
+    both = "both"
 
 
 class User(BaseModel):
@@ -23,6 +35,9 @@ class User(BaseModel):
     age: int
     course: CourseEnum
     description: str
+    photo_url: str
+    gender: GenderEnum
+    preference: GenderPreference
 
 
 class UserCreate(BaseModel):
@@ -32,6 +47,9 @@ class UserCreate(BaseModel):
     course: CourseEnum
     tg_id: str = Field(..., min_length=6, max_length=32)
     nu_id: Optional[str] = Field(None, max_length=32)
+    photo_url: str = Field(...)
+    gender: GenderEnum
+    preference: GenderPreference
 
 
 class UserUpdate(BaseModel):
@@ -39,3 +57,6 @@ class UserUpdate(BaseModel):
     description: Optional[str] = Field(None, min_length=1, max_length=2048)
     age: Optional[int] = Field(None, ge=0, le=100)
     course: Optional[CourseEnum] = None
+    photo_url: str = Field(...)
+    gender: GenderEnum = None
+    preference: GenderPreference = None

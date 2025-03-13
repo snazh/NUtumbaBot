@@ -5,14 +5,14 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from config import app_settings
 from src.database.postgres import init_postgres, close_postgres
-from src.handlers.user import router as user_router
-
-
+from src.handlers.registration import router as registration_router
+from src.handlers.account import router as account_router
 
 # Initialize bot and dispatcher
 bot = Bot(token=app_settings.BOT_TOKEN)
 dp = Dispatcher()
-dp.include_router(user_router)
+dp.include_router(registration_router)
+dp.include_router(account_router)
 # Enable logging
 logging.basicConfig(level=logging.INFO)
 
@@ -40,10 +40,6 @@ async def main():
         await dp.start_polling(bot)
     finally:
         await close_postgres()  # Close DB connection on shutdown
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
 
 
 if __name__ == "__main__":
