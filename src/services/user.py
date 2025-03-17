@@ -1,66 +1,43 @@
-from typing import Optional
-
-from src.database.postgres import get_postgres
-from src.schemas.user import UserUpdate, UserCreate
-from loguru import logger
+from src.dependencies.user_repo import get_user_repo
+from src.repository.user import UserRepository
+from src.schemas.user import UserCreate
 
 
 class UserService:
-    @staticmethod
-    async def insert(user: UserCreate) -> bool:
-        """Insert a new user"""
-        pool = await get_postgres()
-        async with pool.acquire() as conn:
-            try:
-                await conn.execute(
-                    "INSERT INTO users "
-                    "(username, tg_id, nu_id, age, course, description, photo_url, gender, preference)"
-                    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )",
-                    user.username, user.tg_id, user.nu_id, user.age, user.course, user.description, user.photo_url,
-                    user.gender, user.preference
-                )
-                return True
-            except Exception as e:
-                logger.error(f"❌ Failed to register user {user.tg_id}: {e}")
-                return False
+    def __init__(self, user_repo: UserRepository):
+        self.user_repo = user_repo
 
-    @staticmethod
-    async def get_by_tg_id(tg_id: str) -> Optional[dict]:
-        """Fetch user by tg_id"""
-        pool = await get_postgres()
-        async with pool.acquire() as conn:
-            try:
-                user = await conn.fetchrow("SELECT * FROM users WHERE tg_id = $1", tg_id)
-                if user:
-                    return dict(user)
-                return None
-            except Exception as e:
-                logger.error(f"❌ Failed to fetch user with tg_id({tg_id}): {e}")
-                return None
+    @classmethod
+    async def create(cls):
+        """Asynchronous constructor to create an instance of UserService"""
+        user_repo = await get_user_repo()
+        return cls(user_repo)
 
-    # @staticmethod
-    # async def update(tg_id: str, user: UserUpdate) -> Optional[dict]:
-    #     """Update user"""
-    #     pool = await get_postgres()
-    #     async with pool.acquire() as conn:
-    #         try:
-    #             result = await conn.execute(
-    #                 "UPDATE users"
-    #                 "SET ",
-    #                 user.username, user.tg_id, user.nu_id, user.age, user.course, user.description
-    #             )
-    #             return result
-    #         except Exception as e:
-    #             logger.error(f"❌ Failed to update user {tg_id}: {e}")
-    #             return None
+    async def create_user(self, user_data: dict):
+        new_user = UserCreate(
+            username=user_data["username"],
+            tg_id=user_data["tg_id"],
+            age=user_data["age"],
+            course=user_data["course"],
+            description=user_data["description"],
+            gender=user_data["gender"],
+            preference=user_data["preference"],
+            photo_url=user_data["photo_url"],
+            nu_id=None  # Optional
+        )
+        return await self.user_repo.insert(new_user)
 
-    @staticmethod
-    async def delete(tg_id: str) -> bool:
-        """Delete a user by tg_id"""
-        pool = await get_postgres()
-        async with pool.acquire() as conn:
-            result = await conn.execute("DELETE FROM users WHERE tg_id = $1", tg_id)
-            if result == "DELETE 1":
-                logger.info(f"🗑️ User with tg_id {tg_id} deleted.")
-                return True
-            return False
+    async def get_profile(self, tg_id: str):
+        return await self.user_repo.get_by_tg_id(tg_id)
+
+    async def update_username(self, tg_id: str, new_name: str) -> bool:
+        return await self.user_repo.partial_update(tg_id=tg_id, parameter="username", value=new_name)
+
+    async def update_description(self, tg_id: str, new_desc: str) -> bool:
+        return await self.user_repo.partial_update(tg_id=tg_id, parameter="description", value=new_desc)
+
+    async def update_photo(self, tg_id: str, new_photo: str) -> bool:
+        return await self.user_repo.partial_update(tg_id=tg_id, parameter="photo", value=new_photo)
+
+    async def change_status(self, tg_id: str, status: bool):
+        return await self.user_repo.partial_update(tg_id=tg_id, parameter="search_status", value=status)

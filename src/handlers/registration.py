@@ -1,7 +1,9 @@
-from src.schemas.user import UserCreate
-from src.services.user import UserService
+from src.dependencies.user_service import get_user_service
+from src.utils.message_formatter import get_formatted_anketa
+
 from src.interface.keyboards.account import course, gender, preference
-from aiogram import Router, types, F
+from aiogram import Router, F
+from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
@@ -22,10 +24,11 @@ class RegistrationState(StatesGroup):
 
 # Step 1: Start Registration
 @router.message(Command("register"))
-async def start_registration(message: types.Message, state: FSMContext):
+async def start_registration(message: Message, state: FSMContext):
     """Initiates the registration process."""
+    user_service = await get_user_service()
     tg_id = str(message.from_user.id)
-    user = await UserService.get_by_tg_id(tg_id)
+    user = await user_service.get_profile(tg_id)
 
     if user is None:
         await message.answer("📝 Please enter your username:")
@@ -37,7 +40,7 @@ async def start_registration(message: types.Message, state: FSMContext):
 
 # Step 2: Capture Username
 @router.message(RegistrationState.username)
-async def process_username(message: types.Message, state: FSMContext):
+async def process_username(message: Message, state: FSMContext):
     """Stores username and asks for age."""
 
     username = message.text.strip()
@@ -56,10 +59,10 @@ async def process_username(message: types.Message, state: FSMContext):
 
 # Step 3: Capture Age
 @router.message(RegistrationState.age)
-async def process_age(message: types.Message, state: FSMContext):
+async def process_age(message: Message, state: FSMContext):
     """Stores age and asks for course."""
-    if not message.text.isdigit() or int(message.text) < 16:
-        await message.answer("❌ Please enter a valid age (must be 16 or older).")
+    if not message.text.isdigit() or int(message.text) < 16 or int(message.text) > 100:
+        await message.answer("❌ Please enter a valid age (must be from 16-100).")
         return
 
     await state.update_data(age=int(message.text))
@@ -69,7 +72,7 @@ async def process_age(message: types.Message, state: FSMContext):
 
 # Step 4: Capture Course
 @router.message(RegistrationState.course)
-async def process_course(message: types.Message, state: FSMContext):
+async def process_course(message: Message, state: FSMContext):
     """Stores course and asks for photo."""
     valid_courses = ["NUFYP", "Bachelor 1", "Bachelor 2", "Bachelor 3", "Bachelor 4", "Graduate", "PhD", "Other"]
     if message.text not in valid_courses:
@@ -82,13 +85,13 @@ async def process_course(message: types.Message, state: FSMContext):
 
 
 # Step 5: Capture Photo
-@router.message(RegistrationState.photo, F.photo)
-async def process_photo(message: types.Message, state: FSMContext):
+@router.message(RegistrationState.photo)
+async def process_photo(message: Message, state: FSMContext):
     """Stores user photo and asks for description."""
-    photo = message.photo[-1]  # Get the highest resolution photo
-    if not photo:
+    if not message.photo:
         await message.answer("❌ Please send a valid photo.")
         return
+    photo = message.photo[-1]  # Get the highest resolution photo
 
     await state.update_data(photo_url=photo.file_id)
     await message.answer("📜 Enter a short description about yourself (max 2048 characters):")
@@ -97,7 +100,7 @@ async def process_photo(message: types.Message, state: FSMContext):
 
 # Step 6: Capture Description
 @router.message(RegistrationState.description)
-async def process_description(message: types.Message, state: FSMContext):
+async def process_description(message: Message, state: FSMContext):
     """Stores description and asks for gender."""
     description = message.text.strip()
     if len(description) > 2048:
@@ -114,11 +117,11 @@ async def process_description(message: types.Message, state: FSMContext):
 
 # Step 7: Capture Gender
 @router.message(RegistrationState.gender)
-async def process_gender(message: types.Message, state: FSMContext):
+async def process_gender(message: Message, state: FSMContext):
     """Stores gender and asks for soulmate preference."""
     valid_genders = ["male", "female", "other"]
     if message.text not in valid_genders:
-        await message.answer("❌ Invalid selection. Please choose from the keyboard.")
+        await message.answer("❌ Invalid selection. Please choose from the keyboard.1")
         return
 
     await state.update_data(gender=message.text)
@@ -128,7 +131,7 @@ async def process_gender(message: types.Message, state: FSMContext):
 
 # Step 8: Capture Soulmate Gender
 @router.message(RegistrationState.preference)
-async def process_preference(message: types.Message, state: FSMContext):
+async def process_preference(message: Message, state: FSMContext):
     """Stores soulmate gender preference and finalizes registration."""
     valid_genders = ["male", "female", "both"]
     if message.text not in valid_genders:
@@ -137,34 +140,19 @@ async def process_preference(message: types.Message, state: FSMContext):
 
     user_data = await state.get_data()
     user_data["preference"] = message.text
-    tg_id = str(message.from_user.id)
+    user_data["tg_id"] = str(message.from_user.id)
 
+    user_service = await get_user_service()
     # Save user to DB
-    new_user = UserCreate(
-        username=user_data["username"],
-        tg_id=tg_id,
-        age=user_data["age"],
-        course=user_data["course"],
-        description=user_data["description"],
-        gender=user_data["gender"],
-        preference=user_data["preference"],
-        photo_url=user_data["photo_url"],
-        nu_id=None  # Optional
-    )
 
-    result = await UserService.insert(new_user)
+    result = await user_service.create_user(user_data)
 
     if result:
-        await message.answer("✅ Registration complete! You can now use other bot features.")
+
+        await message.answer("✅ Registration complete! That how your anketa looks like")
+        await message.answer(get_formatted_anketa(user_data))
     else:
         await message.answer("❌ Registration failed. Please try again.")
-
-    # Ensure the database reflects the user is now registered
-    saved_user = await UserService.get_by_tg_id(tg_id)
-    if saved_user:
-        await message.answer("✅ Your data is saved in the system.")
-    else:
-        await message.answer("⚠️ Warning: Your registration might not have been saved properly.")
 
     # End FSM
     await state.clear()

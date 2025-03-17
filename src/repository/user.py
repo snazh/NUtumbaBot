@@ -1,0 +1,68 @@
+from typing import Optional
+from asyncpg import Pool
+from loguru import logger
+from src.schemas.user import UserUpdate, UserCreate
+
+
+class UserRepository:
+    def __init__(self, db_pool: Pool):
+        """Initialize UserService with a database connection pool."""
+        self.db_pool = db_pool
+
+    async def insert(self, user: UserCreate) -> bool:
+        """Insert a new user"""
+        async with self.db_pool.acquire() as conn:
+            try:
+                await conn.execute(
+                    "INSERT INTO users "
+                    "(username, tg_id, nu_id, age, course, description, photo_url, gender, preference) "
+                    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+                    user.username, user.tg_id, user.nu_id, user.age, user.course, user.description,
+                    user.photo_url, user.gender, user.preference
+                )
+                return True
+            except Exception as e:
+                logger.error(f"❌ Failed to register user {user.tg_id}: {e}")
+                return False
+
+    async def get_by_tg_id(self, tg_id: str) -> Optional[dict]:
+        """Fetch user by tg_id"""
+        async with self.db_pool.acquire() as conn:
+            try:
+                user = await conn.fetchrow("SELECT * FROM users WHERE tg_id = $1", tg_id)
+                return dict(user) if user else None
+            except Exception as e:
+                logger.error(f"❌ Failed to fetch user with tg_id({tg_id}): {e}")
+                return None
+
+    async def partial_update(self, tg_id: str, parameter: str, value: any) -> bool:
+        """Update a single user field"""
+        async with self.db_pool.acquire() as conn:
+            try:
+                print(value, parameter)
+                valid_columns = {"username", "nu_id", "description", "photo_url", "search_status"}
+
+                if parameter not in valid_columns:
+                    logger.warning(f"⚠️ Attempt to update invalid column: {parameter}")
+                    return False
+
+                query = f"UPDATE users SET {parameter} = $1 WHERE tg_id = $2"
+                await conn.execute(query, value, tg_id)
+                return True
+
+            except Exception as e:
+                logger.error(f"❌ Failed to update user {tg_id}: {e}")
+                return False
+
+    async def delete(self, tg_id: str) -> bool:
+        """Delete a user by tg_id"""
+        async with self.db_pool.acquire() as conn:
+            try:
+                result = await conn.execute("DELETE FROM users WHERE tg_id = $1", tg_id)
+                if result == "DELETE 1":
+                    logger.info(f"🗑️ User with tg_id {tg_id} deleted.")
+                    return True
+                return False
+            except Exception as e:
+                logger.error(f"❌ Failed to delete user {tg_id}: {e}")
+                return False

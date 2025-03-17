@@ -1,27 +1,29 @@
 from typing import Optional
 
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from src.interface.texts import commands, menu_options
-from src.services.user import UserService
+
+from src.dependencies.user_service import get_user_service
 from src.handlers.registration import start_registration
-from src.interface.keyboards.menu import menu_options
-from src.interface.texts import menu_text
+from src.interface.keyboards.menu import menu_options, proceed_activation
+from src.interface.texts import menu_text, commands
 
 router = Router()
 
 
-@router.message(Command("start"))
+@router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
-    tg_id = str(message.from_user.id)
-    user = await UserService.get_by_tg_id(tg_id)
+    user_service = await get_user_service()
+    user_id = str(message.from_user.id)
+    user = await user_service.get_profile(user_id)
     if user is None:
+        await message.answer("Welcome to NUtinder bot. Lets create your first anketa")
         await start_registration(message, state)
+        return
 
-    else:
-        await cmd_menu(message)
+    await message.answer(menu_text.actions, reply_markup=menu_options)
 
 
 @router.message(Command("help"))
@@ -31,14 +33,6 @@ async def cmd_help(message: Message):
 
 @router.message(Command("menu"))
 async def cmd_menu(message: Message):
-    await message.answer(menu_text, reply_markup=menu_options)
+    await message.answer(menu_text.actions, reply_markup=menu_options)
 
-# async def redirect_to_register(message: Message, state: FSMContext) -> Optional[bool]:
-#     tg_id = str(message.from_user.id)
-#     user = await UserService.get_by_tg_id(tg_id)
-#
-#     if user is None:
-#         await start_registration(message, state)
-#
-#     else:
-#         return True
+

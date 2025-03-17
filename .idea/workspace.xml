@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f30c8a75-f433-4dc3-b6d3-adac5831588b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/handlers/registration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/repository/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/user.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/keyboards/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schemas/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/core.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/registration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/texts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/texts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/user.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,22 +44,61 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.app.executor": "Run",
+    "Python.app.py.executor": "Run",
     "Python.config.executor": "Run",
     "Python.ds.executor": "Run",
     "Python.middleware.executor": "Run",
+    "Python.src/app.py.executor": "Run",
     "Python.test.executor": "Run",
+    "Python.user.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "dev",
+    "last_opened_file_path": "C:/Users/konys/PycharmProjects/NUtinder2.0/src/app.py",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src" />
+      <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src\interface" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app.py" type="PythonConfigurationType" factoryName="Python">
+      <module name="NUtinder2.0" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (NUtinder2.0)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

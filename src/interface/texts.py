@@ -11,9 +11,8 @@ commands = CommandTexts(
 menu_text = CommonTexts(
     actions=(
         f"1. View profiles\n"
-        f"2. Fill out the profile again\n"
-        f"3. Change photo\n"
-        f"4. Edit profile text\n"
-        f"5. Link Instagram\n"
+        f"2. My profile\n"
+        f"3. History\n"
+        f"4. Link Instagram\n"
     )
 )
