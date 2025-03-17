@@ -150,7 +150,13 @@ async def process_preference(message: Message, state: FSMContext):
     if result:
 
         await message.answer("✅ Registration complete! That how your anketa looks like")
-        await message.answer(get_formatted_anketa(user_data))
+        await message.answer_photo(
+            photo=user_data["photo_url"],
+            caption=get_formatted_anketa(user_data),
+            parse_mode="Markdown",
+
+        )
+
     else:
         await message.answer("❌ Registration failed. Please try again.")
 

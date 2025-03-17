@@ -3,7 +3,7 @@ def get_formatted_profile(user):
         f"*👤 Profile:*\n"
         f"*Name:* {user["username"]}\n"
         f"*NU ID:* {user["nu_id"] if user["nu_id"] else "n/a"}\n"
-        f"*Gender:* {user["age"]}\n"
+        f"*Year:* {user["age"]}\n"
         f"*Gender:* {user["gender"]}\n"
         f"*Looking for:* {user["preference"]}\n"
         f"*Course:* {user["course"]} year\n"
