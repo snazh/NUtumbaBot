@@ -12,3 +12,8 @@ proceed_activation = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="proceed", callback_data="activate_profile")]
 
 ])
+
+profile_eval = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="👍 Like", callback_data="like"),
+     InlineKeyboardButton(text="👎 Skip", callback_data="skip")]
+])

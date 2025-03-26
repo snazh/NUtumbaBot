@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 
-from src.dependencies.user_service import get_user_service
+from src.dependencies.service_di import get_user_service
 from src.interface.keyboards.account import get_account_options, update_options
 from src.interface.keyboards.menu import menu_options, proceed_activation
 from src.interface.texts import menu_text
@@ -14,10 +14,7 @@ router = Router()
 
 
 @router.message(Command("profile"))
-async def get_anketa(message: Message):
-    user_service = await get_user_service()
-    user_id = str(message.from_user.id)
-    user = await user_service.get_profile(user_id)
+async def get_anketa(message: Message, user: dict):
     keyboard = await get_account_options("profile_details")
     await message.answer_photo(
         photo=user["photo_url"],
@@ -33,7 +30,8 @@ async def get_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "deactivate_profile")
-async def deactivate_account(callback: CallbackQuery):
+async def deactivate_account(callback: CallbackQuery, user:dict):
+    print(user)
     user_service = await get_user_service()
     user_id = str(callback.from_user.id)
     if await user_service.change_status(user_id, False):

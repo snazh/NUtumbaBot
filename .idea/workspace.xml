@@ -6,9 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="f30c8a75-f433-4dc3-b6d3-adac5831588b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dependencies/user_repo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/repo_di.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dependencies/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/service_di.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/core.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/registration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/middlewares/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/middlewares/middlewares.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/message_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/message_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,23 +42,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.app.executor": "Run",
-    "Python.app.py.executor": "Run",
-    "Python.config.executor": "Run",
-    "Python.ds.executor": "Run",
-    "Python.middleware.executor": "Run",
-    "Python.src/app.py.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.user.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dev",
-    "last_opened_file_path": "C:/Users/konys/PycharmProjects/NUtinder2.0/src/app.py",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ds.executor&quot;: &quot;Run&quot;,
+    &quot;Python.middleware.executor&quot;: &quot;Run&quot;,
+    &quot;Python.src/app.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.user.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/konys/PycharmProjects/NUtinder2.0/src/app.py&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src" />

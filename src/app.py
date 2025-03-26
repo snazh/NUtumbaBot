@@ -7,14 +7,16 @@ from src.handlers.registration import router as registration_router
 from src.handlers.account import router as account_router
 from src.handlers.core import router as core_router
 from src.middlewares.middlewares import CheckSearchStatusMiddleware
-
+from src.handlers.menu import router as menu_router
 # Initialize bot and dispatcher
 bot = Bot(token=app_settings.BOT_TOKEN)
 dp = Dispatcher()
 dp.include_router(registration_router)
 dp.include_router(account_router)
 dp.include_router(core_router)
+dp.include_router(menu_router)
 dp.message.middleware.register(CheckSearchStatusMiddleware())
+# dp.callback_query.middleware.register(CheckSearchStatusMiddleware())
 # Enable logging
 logging.basicConfig(level=logging.INFO)
 

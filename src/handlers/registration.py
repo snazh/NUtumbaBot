@@ -1,4 +1,4 @@
-from src.dependencies.user_service import get_user_service
+from src.dependencies.service_di import get_user_service
 from src.utils.message_formatter import get_formatted_anketa
 
 from src.interface.keyboards.account import course, gender, preference

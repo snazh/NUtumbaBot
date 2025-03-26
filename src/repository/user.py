@@ -39,7 +39,7 @@ class UserRepository:
         """Update a single user field"""
         async with self.db_pool.acquire() as conn:
             try:
-                print(value, parameter)
+
                 valid_columns = {"username", "nu_id", "description", "photo_url", "search_status"}
 
                 if parameter not in valid_columns:
@@ -65,4 +65,28 @@ class UserRepository:
                 return False
             except Exception as e:
                 logger.error(f"❌ Failed to delete user {tg_id}: {e}")
+                return False
+
+    async def special_user_filter(self, parameter: str, value: any):
+        async with self.db_pool.acquire() as conn:
+            try:
+
+                statement = f"""  
+                    SELECT u.*
+                    FROM users AS u
+                    WHERE u.tg_id != $1
+                      AND u.id NOT IN (
+                        SELECT e.anketa_id
+                        FROM evaluation AS e
+                        JOIN users as u ON u.id = e.lover_id
+                        WHERE u.tg_id=$1
+                      );
+                """
+
+                records = await conn.fetch(statement, value)
+                results = [dict(record) for record in records]
+                print(results)
+                return results
+            except Exception as e:
+                logger.error(f"❌ Failed to filter users: {e}")
                 return False

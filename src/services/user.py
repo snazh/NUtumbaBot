@@ -1,4 +1,4 @@
-from src.dependencies.user_repo import get_user_repo
+from src.dependencies.repo_di import get_user_repo
 from src.repository.user import UserRepository
 from src.schemas.user import UserCreate
 
@@ -41,3 +41,8 @@ class UserService:
 
     async def change_status(self, tg_id: str, status: bool):
         return await self.user_repo.partial_update(tg_id=tg_id, parameter="search_status", value=status)
+
+    async def get_profile_list_for_user(self, user_id: str):
+        anketas = await self.user_repo.special_user_filter("tg_id", user_id)
+
+        return anketas
