@@ -32,3 +32,5 @@ async def cmd_help(message: Message):
 @router.message(Command("menu"))
 async def cmd_menu(message: Message):
     await message.answer(menu_text.actions, reply_markup=menu_options)
+
+

@@ -18,4 +18,5 @@ def get_formatted_anketa(user):
         f"{user['username']}, {user['course']} year\n"
         f"{user['description']}"
     )
+
     return anketa_text

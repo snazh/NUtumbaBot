@@ -30,8 +30,8 @@ async def get_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "deactivate_profile")
-async def deactivate_account(callback: CallbackQuery, user:dict):
-    print(user)
+async def deactivate_account(callback: CallbackQuery):
+
     user_service = await get_user_service()
     user_id = str(callback.from_user.id)
     if await user_service.change_status(user_id, False):
@@ -65,7 +65,7 @@ async def get_full_profile(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "anketa")
-async def get_full_profile(callback: CallbackQuery):
+async def get_anketa(callback: CallbackQuery):
     user_service = await get_user_service()
     user_id = str(callback.from_user.id)
     user = await user_service.get_profile(user_id)
@@ -122,3 +122,8 @@ async def update_value(message: Message, state: FSMContext):
         await message.answer("❌ Update failed.")
 
     await state.clear()
+
+
+@router.callback_query(F.data == "observe_lovers")
+async def observe_lovers(callback: CallbackQuery, state: FSMContext):
+    pass

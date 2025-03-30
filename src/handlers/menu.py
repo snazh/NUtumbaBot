@@ -1,15 +1,14 @@
-from typing import Optional
+
 
 from aiogram import Router, F
-from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 from src.utils.message_formatter import get_formatted_anketa
 from src.dependencies.service_di import get_user_service, get_eval_service
-from src.handlers.registration import start_registration
-from src.interface.keyboards.menu import menu_options, proceed_activation, profile_eval
-from src.interface.texts import menu_text, commands
+
+from src.interface.keyboards.menu import profile_eval
+
 
 router = Router()
 
@@ -75,3 +74,5 @@ async def handle_reaction(callback: CallbackQuery, state: FSMContext):
     else:
         await callback.message.answer("🎉 You've reached the end of the profiles!")
         await state.clear()
+
+

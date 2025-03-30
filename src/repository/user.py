@@ -67,7 +67,7 @@ class UserRepository:
                 logger.error(f"❌ Failed to delete user {tg_id}: {e}")
                 return False
 
-    async def special_user_filter(self, parameter: str, value: any):
+    async def get_anketas_for_user(self, tg_id: str):
         async with self.db_pool.acquire() as conn:
             try:
 
@@ -83,10 +83,34 @@ class UserRepository:
                       );
                 """
 
-                records = await conn.fetch(statement, value)
+                records = await conn.fetch(statement, tg_id)
                 results = [dict(record) for record in records]
-                print(results)
+
                 return results
             except Exception as e:
                 logger.error(f"❌ Failed to filter users: {e}")
+                return False
+
+    async def get_partners(self, tg_id: str):
+
+        async with self.db_pool.acquire() as conn:
+            try:
+
+                statement = f"""  
+                    
+                    SELECT * FROM users WHERE id in (     
+                    SELECT lover_id FROM evaluation
+                    INNER JOIN users ON anketa_id = users.id
+                    WHERE users.tg_id = $1
+                    )
+
+                      
+                """
+
+                records = await conn.fetch(statement, tg_id)
+                results = [dict(record) for record in records]
+
+                return results
+            except Exception as e:
+                logger.error(f"❌ Failed to fetch partners for user: {e}")
                 return False

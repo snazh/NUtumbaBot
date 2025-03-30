@@ -27,17 +27,20 @@ async def get_account_options(profile_type: str):
     profile_callback = "full_profile" if profile_type == "profile_details" else "anketa"
     return InlineKeyboardMarkup(inline_keyboard=[
 
-        [InlineKeyboardButton(text=profile_text, callback_data=profile_callback)],
-        [InlineKeyboardButton(text="Change smth", callback_data="update_profile")],
-        [InlineKeyboardButton(text="Deactivate", callback_data="deactivate_profile")],
-        [InlineKeyboardButton(text="Menu", callback_data="menu")]
+        [InlineKeyboardButton(text=f"👤 {profile_text}", callback_data=profile_callback)],
+        [InlineKeyboardButton(text="✏️ Change smth", callback_data="update_profile")],
+        [InlineKeyboardButton(text="🛑 Deactivate", callback_data="deactivate_profile")],
+        [InlineKeyboardButton(text="📋 Menu", callback_data="menu")]
     ])
 
 
 update_options = InlineKeyboardMarkup(inline_keyboard=[
 
-    [InlineKeyboardButton(text="username", callback_data="username")],
-    [InlineKeyboardButton(text="photo", callback_data="photo_url")],
-    [InlineKeyboardButton(text="description", callback_data="description")],
+    [InlineKeyboardButton(text="👤 username", callback_data="username")],
+    [InlineKeyboardButton(text="🖼️ photo", callback_data="photo_url")],
+    [InlineKeyboardButton(text="📝 description", callback_data="description")],
 
 ])
+
+
+

@@ -42,7 +42,11 @@ class UserService:
     async def change_status(self, tg_id: str, status: bool):
         return await self.user_repo.partial_update(tg_id=tg_id, parameter="search_status", value=status)
 
-    async def get_profile_list_for_user(self, user_id: str):
-        anketas = await self.user_repo.special_user_filter("tg_id", user_id)
+    async def get_profile_list_for_user(self, tg_id: str):
+        anketas = await self.user_repo.get_anketas_for_user(tg_id)
 
         return anketas
+
+    async def get_user_who_liked_user(self, tg_id):
+        partners = await self.user_repo.get_partners(tg_id)
+        return partners

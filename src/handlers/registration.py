@@ -1,7 +1,7 @@
 from src.dependencies.service_di import get_user_service
 from src.utils.message_formatter import get_formatted_anketa
 
-from src.interface.keyboards.account import course, gender, preference
+from src.interface.keyboards.account import course, gender, preference, get_account_options
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
@@ -154,7 +154,7 @@ async def process_preference(message: Message, state: FSMContext):
             photo=user_data["photo_url"],
             caption=get_formatted_anketa(user_data),
             parse_mode="Markdown",
-
+            reply_markup=await get_account_options("anketa")
         )
 
     else:
