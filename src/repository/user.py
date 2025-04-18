@@ -67,23 +67,23 @@ class UserRepository:
                 logger.error(f"❌ Failed to delete user {tg_id}: {e}")
                 return False
 
-    async def get_anketas_for_user(self, tg_id: str):
+    async def get_anketas_for_user(self, user_id: int):
         async with self.db_pool.acquire() as conn:
             try:
 
                 statement = f"""  
-                    SELECT u.*
-                    FROM users AS u
-                    WHERE u.tg_id != $1
-                      AND u.id NOT IN (
-                        SELECT e.anketa_id
-                        FROM evaluation AS e
-                        JOIN users as u ON u.id = e.lover_id
-                        WHERE u.tg_id=$1
-                      );
+                    SELECT * FROM users 
+                    WHERE "id" <> $1 AND "id" NOT in (
+                    
+                    SELECT anketa_id FROM evaluation WHERE lover_id=$1
+                    UNION
+                    SELECT lover_id FROM evaluation WHERE anketa_id=$1
+                    
+                    
+                    );
                 """
 
-                records = await conn.fetch(statement, tg_id)
+                records = await conn.fetch(statement, user_id)
                 results = [dict(record) for record in records]
 
                 return results
@@ -91,23 +91,19 @@ class UserRepository:
                 logger.error(f"❌ Failed to filter users: {e}")
                 return False
 
-    async def get_partners(self, tg_id: str):
-
+    async def get_partners(self, user_id: int):
         async with self.db_pool.acquire() as conn:
             try:
-
                 statement = f"""  
                     
-                    SELECT * FROM users WHERE id in (     
+                    SELECT * FROM users 
+                    WHERE "id" in (
                     SELECT lover_id FROM evaluation
-                    INNER JOIN users ON anketa_id = users.id
-                    WHERE users.tg_id = $1
-                    )
-
-                      
+                    WHERE anketa_id=$1
+                    );  
                 """
 
-                records = await conn.fetch(statement, tg_id)
+                records = await conn.fetch(statement, user_id)
                 results = [dict(record) for record in records]
 
                 return results

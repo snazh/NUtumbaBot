@@ -1,7 +1,7 @@
 from src.dependencies.repo_di import get_eval_repo
 from src.repository.evaluation import EvalRepository
 from src.schemas.evaluation import EvalCreate
-from src.schemas.user import UserCreate
+
 
 
 class EvalService:

@@ -1,89 +1,103 @@
-import asyncio
-from typing import Any, Callable, Dict, Awaitable
+from typing import Any, Callable, Dict, Awaitable, List
 from aiogram import BaseMiddleware
 from aiogram.fsm.context import FSMContext
 from aiogram.types import TelegramObject, Message, CallbackQuery
 
 from src.dependencies.service_di import get_user_service
-from src.interface.keyboards.menu import menu_options, proceed_activation
+from src.interface.keyboards.menu import proceed_activation, proceed_observe
 
 from src.utils.message_formatter import get_formatted_anketa
-from aiogram.filters import CommandStart
-from src.handlers.registration import start_registration
 
 
 class CheckSearchStatusMiddleware(BaseMiddleware):
+    def __init__(self, skip_states: List[str]):
+        self.skip_states = skip_states
 
     async def __call__(self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
                        event: TelegramObject,
                        data: Dict[str, Any]) -> None:
+
+        state: FSMContext = data.get("state")
+        current_state = await state.get_state()
+        if state and current_state:
+            if current_state.split(":")[0] in self.skip_states:
+                return await handler(event, data)
         user_service = await get_user_service()
-        user_id = str(event.from_user.id)
-        user = await user_service.get_profile(user_id)
+        tg_id = str(event.from_user.id)
+        user = await user_service.get_profile(tg_id)
         data["user"] = user
-        if user is None:
+        data["user_service"] = user_service
+
+        if user is None or (
+                isinstance(event, Message) and event.text and event.text.startswith(("/register", "/start"))):
             return await handler(event, data)
-
-        if isinstance(event, Message) and event.text and event.text.startswith(("/register", "/start")):
+        if isinstance(event, CallbackQuery) and event.data == "activate_profile":
             return await handler(event, data)
-
-        # ✅ Ignore messages if user is in a registration state
-        state: FSMContext = data.get("state")  # Get FSM state
-        current_state = await state.get_state()  # Get current state name
-
-        if current_state and current_state.startswith("RegistrationState"):
-            return await handler(event, data)  # Skip middleware processing
 
         if not user["search_status"]:
             data["search_status"] = False
-            user_text = get_formatted_anketa(user)
-
-            await event.answer_photo(photo=user["photo_url"], caption=user_text, parse_mode="Markdown")
-            await event.answer("Your profile is not active. Wanna recover your anketa?",
-                               reply_markup=proceed_activation)
-
+            if isinstance(event, CallbackQuery):
+                await self._send_inactive_profile(event.message, user)
+            else:
+                await self._send_inactive_profile(event, user)
             return
         else:
             data["search_status"] = True
+
         return await handler(event, data)
+
+    async def _send_inactive_profile(self, event: TelegramObject, user: Dict[str, Any]) -> None:
+
+        user_text = get_formatted_anketa(user)
+        await event.answer_photo(photo=user["photo_url"], caption=user_text, parse_mode="Markdown")
+        await event.answer("Your profile is inactive. Activate it?", reply_markup=proceed_activation)
 
 
 class CheckForUpdates(BaseMiddleware):
+    def __init__(self, skip_states: List[str]):
+        self.skip_states = skip_states
+
     async def __call__(self, handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
                        event: TelegramObject,
                        data: Dict[str, Any]) -> None:
+        state: FSMContext = data.get("state")
+        current_state = await state.get_state()
+        if state and current_state:
+            if current_state.split(":")[0] in self.skip_states:
+                return await handler(event, data)
 
-        if isinstance(event, Message) and event.text and event.text.startswith(("/register")):
+        if isinstance(event, CallbackQuery) and event.data == "activate_profile":
             return await handler(event, data)
-
-        # ✅ Ignore messages if user is in a registration state
-        state: FSMContext = data.get("state")  # Get FSM state
-        current_state = await state.get_state()  # Get current state name
-
-        if current_state and current_state.startswith("RegistrationState"):
-            return await handler(event, data)  # Skip middleware processing
-
         user_service = await get_user_service()
+        current_user = data["user"]
+        lovers = await user_service.get_user_lovers(current_user["id"])
 
-        user_id = str(event.from_user.id)
-        partners = await user_service.get_user_who_liked_user(user_id)
-        current_user = await user_service.get_profile(user_id)
+        if lovers:
+            data["lovers"] = lovers
+            if isinstance(event, CallbackQuery) and event.data == "observe_lovers":
 
-        if not partners:
-            return await handler(event, data)  # Skip middleware processing
+                return await handler(event, data)
+            else:
+                await self._notify_user(event, lovers, current_user)
+                return
+        else:
+            return await handler(event, data)
+        # return await handler(event, data)
 
-        partner_num = len(partners)
+    async def _notify_user(self, event: TelegramObject, lovers: List[dict], user: dict):
+        event = event.message if isinstance(event, CallbackQuery) else event
+        partners_num = len(lovers)
         notification = ""
         pronounce = ""
-        match current_user["preference"]:
+        match user["preference"]:
             case "male":
-                notification = f"{partner_num} guy{"s" if partner_num > 1 else ""}"
+                notification = f"{partners_num} guy{"s" if partners_num > 1 else ""}"
                 pronounce = "him"
             case "female":
-                notification = f"{partner_num} girl{"s" if partner_num > 1 else ""} "
+                notification = f"{partners_num} girl{"s" if partners_num > 1 else ""} "
                 pronounce = "her"
             case "both":
-                notification = f"{partner_num} {"people" if partner_num > 1 else "person"}"
+                notification = f"{partners_num} {"people" if partners_num > 1 else "person"}"
                 pronounce = "them"
-        await event.answer(
-            f"You have {notification} who liked you. Wanna see {pronounce}")
+        await event.answer(f"You have {notification} who liked you. Wanna see {pronounce}",
+                           reply_markup=proceed_observe)

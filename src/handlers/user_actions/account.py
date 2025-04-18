@@ -1,13 +1,13 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 
-from src.dependencies.service_di import get_user_service
 from src.interface.keyboards.account import get_account_options, update_options
-from src.interface.keyboards.menu import menu_options, proceed_activation
+from src.interface.keyboards.menu import menu_options
 from src.interface.texts import menu_text
+from src.services.user import UserService
+from src.states.user import UpdateProfileState
 from src.utils.message_formatter import get_formatted_profile, get_formatted_anketa
 from aiogram.filters import Command
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
 router = Router()
@@ -30,10 +30,8 @@ async def get_menu(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "deactivate_profile")
-async def deactivate_account(callback: CallbackQuery):
-
-    user_service = await get_user_service()
-    user_id = str(callback.from_user.id)
+async def deactivate_account(callback: CallbackQuery, user: dict, user_service: UserService):
+    user_id = user["tg_id"]
     if await user_service.change_status(user_id, False):
         await callback.message.answer(f"✅ Your profile deactivated")
     else:
@@ -41,9 +39,8 @@ async def deactivate_account(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "activate_profile")
-async def activate_account(callback: CallbackQuery):
-    user_service = await get_user_service()
-    user_id = str(callback.from_user.id)
+async def activate_account(callback: CallbackQuery, user: dict, user_service: UserService):
+    user_id = user["tg_id"]
     if await user_service.change_status(user_id, True):
         await callback.message.answer(f"✅ Your profile activated")
     else:
@@ -51,10 +48,7 @@ async def activate_account(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "full_profile")
-async def get_full_profile(callback: CallbackQuery):
-    user_id = str(callback.from_user.id)
-    user_service = await get_user_service()
-    user = await user_service.get_profile(user_id)
+async def get_full_profile(callback: CallbackQuery, user: dict):
     keyboard = await get_account_options("anketa")
     await callback.message.answer_photo(
         photo=user["photo_url"],
@@ -65,10 +59,7 @@ async def get_full_profile(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "anketa")
-async def get_anketa(callback: CallbackQuery):
-    user_service = await get_user_service()
-    user_id = str(callback.from_user.id)
-    user = await user_service.get_profile(user_id)
+async def get_anketa(callback: CallbackQuery, user: dict):
     keyboard = await get_account_options("profile_details")
     await callback.message.answer_photo(
         photo=user["photo_url"],
@@ -76,11 +67,6 @@ async def get_anketa(callback: CallbackQuery):
         parse_mode="Markdown",
         reply_markup=keyboard
     )
-
-
-class UpdateProfileState(StatesGroup):
-    field = State()
-    value = State()
 
 
 @router.callback_query(F.data == "update_profile")
@@ -100,10 +86,10 @@ async def handle_field_selection(callback: CallbackQuery, state: FSMContext):
 
 
 @router.message(UpdateProfileState.value)
-async def update_value(message: Message, state: FSMContext):
+async def update_value(message: Message, state: FSMContext, user: dict, user_service: UserService):
     """Save new value and update profile."""
-    user_service = await get_user_service()
-    user_id = str(message.from_user.id)
+
+    user_id = user["tg_id"]
     data = await state.get_data()
 
     result = None
@@ -125,5 +111,5 @@ async def update_value(message: Message, state: FSMContext):
 
 
 @router.callback_query(F.data == "observe_lovers")
-async def observe_lovers(callback: CallbackQuery, state: FSMContext):
+async def observe_lovers(callback: CallbackQuery, state: FSMContext, user: dict):
     pass

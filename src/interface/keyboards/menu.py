@@ -16,8 +16,23 @@ proceed_observe = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="🙂‍↕️ yes", callback_data="observe_lovers")]
 ])
 
-profile_eval = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="👍 Like", callback_data="like"),
-     InlineKeyboardButton(text="👎 Skip", callback_data="skip"),
-     InlineKeyboardButton(text="menu", callback_data="menu"), ]
-])
+
+def get_eval_keyboard(goal: str):
+    like_callback = ""
+    skip_callback = ""
+    match goal:
+
+        case "search":
+            like_callback = "like"
+            skip_callback = "skip"
+        case "observe":
+            like_callback = "mutual_like"
+            skip_callback = "refuse"
+
+    profile_eval = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="👍 Like", callback_data=like_callback),
+         InlineKeyboardButton(text="👎 Skip", callback_data=skip_callback),
+         InlineKeyboardButton(text="menu", callback_data="menu"), ]
+    ])
+
+    return profile_eval

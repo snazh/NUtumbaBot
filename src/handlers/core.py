@@ -1,24 +1,21 @@
-from typing import Optional
-
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from src.dependencies.service_di import get_user_service
-from src.handlers.registration import start_registration
-from src.interface.keyboards.menu import menu_options, proceed_activation
+from src.handlers.user_actions.registration import start_registration
+from src.interface.keyboards.menu import menu_options
 from src.interface.texts import menu_text, commands
+from src.services.user import UserService
 
 router = Router()
 
 
 @router.message(CommandStart())
-async def cmd_start(message: Message, state: FSMContext, user: dict):
-
+async def cmd_start(message: Message, state: FSMContext, user: dict, user_service: UserService):
     if user is None:
         await message.answer("Welcome to NUtinder bot. Lets create your first anketa")
-        await start_registration(message, state)
+        await start_registration(message, state, user_service=user_service)
         return
 
     await message.answer(menu_text.actions, reply_markup=menu_options)
@@ -32,5 +29,3 @@ async def cmd_help(message: Message):
 @router.message(Command("menu"))
 async def cmd_menu(message: Message):
     await message.answer(menu_text.actions, reply_markup=menu_options)
-
-

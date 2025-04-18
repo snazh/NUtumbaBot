@@ -1,32 +1,22 @@
-from src.dependencies.service_di import get_user_service
+from src.services.user import UserService
+from src.states.user import RegistrationState
 from src.utils.message_formatter import get_formatted_anketa
 
 from src.interface.keyboards.account import course, gender, preference, get_account_options
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
+
 
 router = Router()
 
 
-# Define User Registration States
-class RegistrationState(StatesGroup):
-    username = State()
-    age = State()
-    course = State()
-    photo = State()
-    description = State()
-    gender = State()
-    preference = State()
-
-
 # Step 1: Start Registration
 @router.message(Command("register"))
-async def start_registration(message: Message, state: FSMContext):
+async def start_registration(message: Message, state: FSMContext, user_service: UserService):
     """Initiates the registration process."""
-    user_service = await get_user_service()
+
     tg_id = str(message.from_user.id)
     user = await user_service.get_profile(tg_id)
 
@@ -131,7 +121,7 @@ async def process_gender(message: Message, state: FSMContext):
 
 # Step 8: Capture Soulmate Gender
 @router.message(RegistrationState.preference)
-async def process_preference(message: Message, state: FSMContext):
+async def process_preference(message: Message, state: FSMContext, user_service: UserService):
     """Stores soulmate gender preference and finalizes registration."""
     valid_genders = ["male", "female", "both"]
     if message.text not in valid_genders:
@@ -142,7 +132,6 @@ async def process_preference(message: Message, state: FSMContext):
     user_data["preference"] = message.text
     user_data["tg_id"] = str(message.from_user.id)
 
-    user_service = await get_user_service()
     # Save user to DB
 
     result = await user_service.create_user(user_data)

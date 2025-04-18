@@ -7,16 +7,16 @@
     <list default="true" id="f30c8a75-f433-4dc3-b6d3-adac5831588b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/account.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/core.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/menu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/registration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/registration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/interface/keyboards/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/middlewares/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/middlewares/middlewares.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/message_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/message_formatter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +61,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src\handlers\user_actions" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src\interface" />
@@ -118,5 +119,16 @@
       <updated>1741789902427</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
