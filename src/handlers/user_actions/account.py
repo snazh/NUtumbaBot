@@ -1,9 +1,9 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 
-from src.interface.keyboards.account import get_account_options, update_options
-from src.interface.keyboards.menu import menu_options
-from src.interface.texts import menu_text
+from src.markups.keyboards.account import get_account_options, update_options
+from src.markups.keyboards.menu import menu_options
+from src.markups.texts import menu_text
 from src.services.user import UserService
 from src.states.user import UpdateProfileState
 from src.utils.message_formatter import get_formatted_profile, get_formatted_anketa
@@ -13,7 +13,7 @@ from aiogram.fsm.context import FSMContext
 router = Router()
 
 
-@router.message(Command("profile"))
+@router.message(Command("anketa"))
 async def get_anketa(message: Message, user: dict):
     keyboard = await get_account_options("profile_details")
     await message.answer_photo(
@@ -59,7 +59,7 @@ async def get_full_profile(callback: CallbackQuery, user: dict):
 
 
 @router.callback_query(F.data == "anketa")
-async def get_anketa(callback: CallbackQuery, user: dict):
+async def get_anketa_callback(callback: CallbackQuery, user: dict):
     keyboard = await get_account_options("profile_details")
     await callback.message.answer_photo(
         photo=user["photo_url"],
@@ -110,6 +110,3 @@ async def update_value(message: Message, state: FSMContext, user: dict, user_ser
     await state.clear()
 
 
-@router.callback_query(F.data == "observe_lovers")
-async def observe_lovers(callback: CallbackQuery, state: FSMContext, user: dict):
-    pass

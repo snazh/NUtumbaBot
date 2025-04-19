@@ -2,7 +2,7 @@ from src.services.user import UserService
 from src.states.user import RegistrationState
 from src.utils.message_formatter import get_formatted_anketa
 
-from src.interface.keyboards.account import course, gender, preference, get_account_options
+from src.markups.keyboards.account import course, gender, preference, get_account_options
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command

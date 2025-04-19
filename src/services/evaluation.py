@@ -1,7 +1,6 @@
 from src.dependencies.repo_di import get_eval_repo
 from src.repository.evaluation import EvalRepository
-from src.schemas.evaluation import EvalCreate
-
+from src.repository.schemas.evaluation import EvalCreate
 
 
 class EvalService:
@@ -10,11 +9,11 @@ class EvalService:
 
     @classmethod
     async def create(cls):
-        """Asynchronous constructor to create an instance of UserService"""
+        """Asynchronous constructor to create an instance of EvalService"""
         eval_repo = await get_eval_repo()
         return cls(eval_repo)
 
-    async def eval_profile(self, eval_data: dict):
+    async def eval_profile(self, eval_data: dict) -> bool:
         new_eval = EvalCreate(
             anketa_id=eval_data["anketa_id"],
             lover_id=eval_data["lover_id"],
@@ -22,6 +21,6 @@ class EvalService:
         )
         return await self.eval_repo.insert(new_eval)
 
+    async def delete_eval(self, anketa_id: int):
 
-
-
+        await self.eval_repo.delete(column="anketa_id", value=anketa_id)

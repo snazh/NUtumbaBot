@@ -1,3 +1,4 @@
+from aiogram.types import Message
 from pydantic_settings import BaseSettings, SettingsConfigDict
 import os
 
@@ -23,3 +24,4 @@ class DBSettings(CoreSettings):
 
 db_settings = DBSettings()
 app_settings = AppSettings()
+

@@ -6,15 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="f30c8a75-f433-4dc3-b6d3-adac5831588b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dependencies/repo_di.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/repo_di.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dependencies/service_di.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/service_di.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/core.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/menu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/registration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/keyboards/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/user_actions/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/user_actions/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/user_actions/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/registration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handlers/user_actions/soulmate.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/user_actions/soulmate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/markups/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/markups/keyboards/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/markups/keyboards/account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/keyboards/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/markups/keyboards/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/texts.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/markups/texts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/middlewares/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/middlewares/middlewares.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/relationship.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/relationship.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/schemas/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/schemas/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/schemas/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.py" afterDir="false" />
     </list>
@@ -32,6 +45,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -61,6 +77,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src\repository" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src\handlers\user_actions" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0\src" />
       <recent name="C:\Users\konys\PycharmProjects\NUtinder2.0" />

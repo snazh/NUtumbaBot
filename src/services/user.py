@@ -1,6 +1,6 @@
 from src.dependencies.repo_di import get_user_repo
 from src.repository.user import UserRepository
-from src.schemas.user import UserCreate
+from src.repository.schemas.user import UserCreate
 
 
 class UserService:

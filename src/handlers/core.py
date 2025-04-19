@@ -4,8 +4,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.handlers.user_actions.registration import start_registration
-from src.interface.keyboards.menu import menu_options
-from src.interface.texts import menu_text, commands
+from src.markups.keyboards.menu import menu_options
+from src.markups.texts import menu_text, commands
 from src.services.user import UserService
 
 router = Router()

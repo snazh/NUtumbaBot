@@ -1,27 +1,20 @@
 from typing import List
 
 from aiogram import Router, F
-from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import CallbackQuery
 
 from src.helpers.user import show_profile
-from src.services.user import UserService
 from src.states.search import ObserveState
-from src.utils.message_formatter import get_formatted_anketa
-from src.dependencies.service_di import get_user_service, get_eval_service
+from src.dependencies.service_di import get_eval_service, get_relationship_service
 
-from src.interface.keyboards.menu import get_eval_keyboard, proceed_observe
+from src.markups.keyboards.menu import get_eval_keyboard
 
 router = Router()
 
 
-
-
 @router.callback_query(F.data == "observe_lovers")
 async def observe_lovers(callback: CallbackQuery, state: FSMContext, lovers: List[dict]):
-
     if not lovers:
         await callback.message.answer("❌ No lovers found right now.")
         return
@@ -31,25 +24,28 @@ async def observe_lovers(callback: CallbackQuery, state: FSMContext, lovers: Lis
 
 
 @router.callback_query(F.data.in_({"mutual_like", "refuse"}))
-async def handle_reaction(callback: CallbackQuery, state: FSMContext, user: dict):
+async def handle_reaction_reply(callback: CallbackQuery, state: FSMContext, user: dict):
     eval_service = await get_eval_service()
-
+    relationship_service = await get_relationship_service()
     data = await state.get_data()
     profiles = data.get("lovers")
     index = data.get("index", 0)
 
     current_profile = profiles[index]
 
-    eval_data = {
-
-        "anketa_id": current_profile["id"],
-        "lover_id": user["id"],
-        "evaluation": False
+    relationship_data = {
+        "user1": current_profile["id"],
+        "user2": user["id"],
+        "status": "blacklist"
     }
-    if callback.data == "like":
-        eval_data["evaluation"] = True
 
-    await eval_service.eval_profile(eval_data)
+    if callback.data == "mutual_like":
+        relationship_data["status"] = "couple"
+        mention = f'<a href="tg://user?id={current_profile["tg_id"]}">Click to open user</a>'
+        await callback.message.answer(mention, parse_mode="HTML")
+
+    await eval_service.delete_eval(user["id"])
+    await relationship_service.create_relationship(relationship_data)
     # Show next profile
     if index + 1 < len(profiles):
         await state.update_data(index=index + 1)

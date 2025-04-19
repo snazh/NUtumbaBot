@@ -18,10 +18,10 @@ dp.include_router(registration_router)
 dp.include_router(account_router)
 dp.include_router(core_router)
 dp.include_router(menu_router)
-
-dp.message.middleware.register(CheckSearchStatusMiddleware())
-dp.callback_query.middleware.register(CheckSearchStatusMiddleware())
-update_middleware = CheckForUpdates(skip_states=["RegistrationState", "ObserveState", "SearchState", "UpdateState"])
+states = ["RegistrationState", "ObserveState", "SearchState", "UpdateState"]
+dp.message.middleware.register(CheckSearchStatusMiddleware(skip_states=states))
+dp.callback_query.middleware.register(CheckSearchStatusMiddleware(skip_states=states))
+update_middleware = CheckForUpdates(skip_states=states)
 dp.message.middleware.register(update_middleware)
 dp.callback_query.middleware.register(update_middleware)
 

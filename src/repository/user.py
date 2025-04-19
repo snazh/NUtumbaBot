@@ -1,13 +1,10 @@
 from typing import Optional
-from asyncpg import Pool
 from loguru import logger
-from src.schemas.user import UserUpdate, UserCreate
+from src.repository.schemas.user import UserCreate
+from src.repository.base import BaseRepo
 
 
-class UserRepository:
-    def __init__(self, db_pool: Pool):
-        """Initialize UserService with a database connection pool."""
-        self.db_pool = db_pool
+class UserRepository(BaseRepo):
 
     async def insert(self, user: UserCreate) -> bool:
         """Insert a new user"""
@@ -40,12 +37,6 @@ class UserRepository:
         async with self.db_pool.acquire() as conn:
             try:
 
-                valid_columns = {"username", "nu_id", "description", "photo_url", "search_status"}
-
-                if parameter not in valid_columns:
-                    logger.warning(f"⚠️ Attempt to update invalid column: {parameter}")
-                    return False
-
                 query = f"UPDATE users SET {parameter} = $1 WHERE tg_id = $2"
                 await conn.execute(query, value, tg_id)
                 return True
@@ -54,18 +45,18 @@ class UserRepository:
                 logger.error(f"❌ Failed to update user {tg_id}: {e}")
                 return False
 
-    async def delete(self, tg_id: str) -> bool:
-        """Delete a user by tg_id"""
-        async with self.db_pool.acquire() as conn:
-            try:
-                result = await conn.execute("DELETE FROM users WHERE tg_id = $1", tg_id)
-                if result == "DELETE 1":
-                    logger.info(f"🗑️ User with tg_id {tg_id} deleted.")
-                    return True
-                return False
-            except Exception as e:
-                logger.error(f"❌ Failed to delete user {tg_id}: {e}")
-                return False
+    # async def delete(self, tg_id: str) -> bool:
+    #     """Delete a user by tg_id"""
+    #     async with self.db_pool.acquire() as conn:
+    #         try:
+    #             result = await conn.execute("DELETE FROM users WHERE tg_id = $1", tg_id)
+    #             if result == "DELETE 1":
+    #                 logger.info(f"🗑️ User with tg_id {tg_id} deleted.")
+    #                 return True
+    #             return False
+    #         except Exception as e:
+    #             logger.error(f"❌ Failed to delete user {tg_id}: {e}")
+    #             return False
 
     async def get_anketas_for_user(self, user_id: int):
         async with self.db_pool.acquire() as conn:

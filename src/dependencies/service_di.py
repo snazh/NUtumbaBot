@@ -1,7 +1,8 @@
 from src.database.postgres import get_postgres
 from src.services.evaluation import EvalService
 from src.services.user import UserService
-from src.dependencies.repo_di import get_user_repo, get_eval_repo
+from src.services.relationship import RelationshipService
+from src.dependencies.repo_di import get_user_repo, get_eval_repo, get_relationship_repo
 
 _user_service_instance = None  # Store a single instance
 
@@ -23,3 +24,14 @@ async def get_eval_service() -> EvalService:
     if _eval_service_instance is None:
         _eval_service_instance = EvalService(await get_eval_repo())
     return _eval_service_instance
+
+
+_relationship_service_instance = None
+
+
+async def get_relationship_service() -> RelationshipService:
+    """Provides a singleton UserService instance."""
+    global _relationship_service_instance
+    if _relationship_service_instance is None:
+        _relationship_service_instance = RelationshipService(await get_relationship_repo())
+    return _relationship_service_instance
